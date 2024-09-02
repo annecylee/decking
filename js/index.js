@@ -1,125 +1,134 @@
-document.addEventListener("DOMContentLoaded", function() {
-  init();
-  setupFormSubmission();
+function generateProductCarousel() {
+  const carousel = document.getElementById("carousel-images");
+  if (!carousel) return; // Exit if carousel doesn't exist on the page
 
-  // Header scroll effect
- ndow.addEventListener("scroll", function () {
-    const header = document.getElementById("header");
-    if (window.scrollY > 100) {
-      header.classList.add("header-scrolled");
-    } else {
-      header.classList.remove("header-scrolled");
-    }
+  products.forEach((product) => {
+    const productEl = document.createElement("article");
+    productEl.innerHTML = `
+      <div class="image fit">
+        <img src="${product.image}" alt="${product.title}" />
+      </div>
+      <p>${product.description}</p>
+      <header>
+        <h3>${product.title}</h3>
+      </header>
+    `;
+    carousel.appendChild(productEl);
   });
+}
 
-  // Carousel
-  // Carousel
-  document.addEventListener("DOMContentLoaded", function () {
-    const carousel = document.querySelector(".carousel");
-    const imagesContainer = carousel.querySelector(".carousel-images");
-    const dotsContainer = carousel.querySelector(".carousel-dots");
-    let images = Array.from(imagesContainer.querySelectorAll("img"));
-    let currentIndex = 0;
-    let intervalId;
+function setupCarousel() {
+  const carousel = document.querySelector(".carousel");
+  if (!carousel) return; // Exit if carousel doesn't exist on the page
 
-    // Function to get image at any index (positive or negative)
-    function getImageAtIndex(index) {
-      return images[((index % images.length) + images.length) % images.length];
-    }
+  const imagesContainer = carousel.querySelector(".carousel-images");
+  const dotsContainer = carousel.querySelector(".carousel-dots");
+  let images = Array.from(imagesContainer.querySelectorAll("img"));
+  console.log(images.length);
+  let currentIndex = 0;
+  let intervalId;
 
-    // Set up the carousel
-    function setupCarousel() {
-      imagesContainer.style.width = `${images.length * 100}%`;
-      images.forEach((img, index) => {
-        img.style.width = `${100 / images.length}%`;
-        img.style.left = `${index * 100}%`;
-      });
-    }
+  function getImageAtIndex(index) {
+    return images[((index % images.length) + images.length) % images.length];
+  }
 
-    // Create half as many dots as there are images
-    const numberOfDots = Math.ceil(images.length / 2);
-    for (let i = 0; i < numberOfDots; i++) {
-      const dot = document.createElement("div");
-      dot.classList.add("dot");
-      dot.addEventListener("click", () => showImage(i * 2));
-      dotsContainer.appendChild(dot);
-    }
-    const dots = Array.from(dotsContainer.querySelectorAll(".dot"));
+  function setupCarouselImages() {
+    imagesContainer.style.width = `${images.length * 100}%`;
+    images.forEach((img, index) => {
+      img.style.width = `${100 / images.length}%`;
+      img.style.left = `${index * 100}%`;
+    });
+  }
 
-    function showImage(index) {
-      currentIndex = index;
-      updateCarousel();
-      updateDots();
-    }
+  // Create half as many dots as there are images
+  const numberOfDots = Math.ceil(images.length / 2);
+  for (let i = 0; i < numberOfDots; i++) {
+    const dot = document.createElement("div");
+    dot.classList.add("dot");
+    dot.addEventListener("click", () => showImage(i * 2));
+    dotsContainer.appendChild(dot);
+  }
+  const dots = Array.from(dotsContainer.querySelectorAll(".dot"));
 
-    function updateCarousel() {
-      if (currentIndex == images.length - 1) {
-        return;
-      } else {
-        const translateValue = (-currentIndex * 100) / images.length;
-        imagesContainer.style.transition = "transform 0.5s ease";
-        imagesContainer.style.transform = `translateX(${translateValue}%)`;
-      }
-
-      // Check if we need to loop
-      if (currentIndex < 0 || currentIndex >= images.length) {
-        setTimeout(() => {
-          imagesContainer.style.transition = "none";
-          currentIndex =
-            ((currentIndex % images.length) + images.length) % images.length;
-          const newTranslateValue = (-currentIndex * 100) / images.length;
-          imagesContainer.style.transform = `translateX(${newTranslateValue}%)`;
-          setTimeout(() => {
-            imagesContainer.style.transition = "transform 0.5s ease";
-          }, 50);
-        }, 500);
-      }
-    }
-    function updateDots() {
-      const actualIndex = Math.floor(currentIndex / 2);
-      dots.forEach((dot, index) => {
-        dot.classList.toggle("active", index === actualIndex);
-      });
-    }
-
-    function showNext() {
-      showImage(currentIndex + 1);
-    }
-
-    function showPrev() {
-      showImage(currentIndex - 1);
-    }
-
-    function startAutoPlay() {
-      intervalId = setInterval(showNext, 3000);
-    }
-
-    function stopAutoPlay() {
-      clearInterval(intervalId);
-    }
-
-    // Initialize
-    setupCarousel();
+  function showImage(index) {
+    currentIndex = index;
+    updateCarousel();
     updateDots();
-    startAutoPlay();
+  }
 
-    carousel.addEventListener("mouseenter", stopAutoPlay);
-    carousel.addEsventListener("mouseleave", startAutoPlay);
+  function updateCarousel() {
+    const translateValue = (-currentIndex * 100) / images.length;
+    imagesContainer.style.transition = "transform 0.5s ease";
+    imagesContainer.style.transform = `translateX(${translateValue}%)`;
 
-    // Touch swipe functionality
-    let touchStartX = 0;
-    let touchEndX = 0;
+    if (currentIndex < 0 || currentIndex >= images.length) {
+      setTimeout(() => {
+        imagesContainer.style.transition = "none";
+        currentIndex =
+          ((currentIndex % images.length) + images.length) % images.length;
+        const newTranslateValue = (-currentIndex * 100) / images.length;
+        imagesContainer.style.transform = `translateX(${newTranslateValue}%)`;
+        setTimeout(() => {
+          imagesContainer.style.transition = "transform 0.5s ease";
+        }, 50);
+      }, 500);
+    }
+  }
 
-    carousel.addEventListener("touchstart", (e) => {
-      touchStartX = e.changedTouches[0].screenX;
+  function updateDots() {
+    const actualIndex = Math.floor(currentIndex / 2);
+    dots.forEach((dot, index) => {
+      dot.classList.toggle("active", index === actualIndex);
     });
+  }
 
-    carousel.addEventListener("touchend", (e) => {
-      touchEndX = e.changedTouches[0].screenX;
-      if (touchStartX - touchEndX > 50) {
-        showNext();
-      } else if (touchEndX - touchStartX > 50) {
-        showPrev();
-      }
-    });
+  function showNext() {
+    showImage(currentIndex + 1);
+  }
+
+  function showPrev() {
+    showImage(currentIndex - 1);
+  }
+
+  function startAutoPlay() {
+    intervalId = setInterval(showNext, 3000);
+  }
+
+  function stopAutoPlay() {
+    clearInterval(intervalId);
+  }
+
+  // Initialize
+  updateDots();
+  startAutoPlay();
+
+  carousel.addEventListener("mouseenter", stopAutoPlay);
+  carousel.addEventListener("mouseleave", startAutoPlay);
+
+  // Touch swipe functionality
+  let touchStartX = 0;
+  let touchEndX = 0;
+
+  carousel.addEventListener("touchstart", (e) => {
+    touchStartX = e.changedTouches[0].screenX;
   });
+
+  carousel.addEventListener("touchend", (e) => {
+    touchEndX = e.changedTouches[0].screenX;
+    if (touchStartX - touchEndX > 50) {
+      showNext();
+    } else if (touchEndX - touchStartX > 50) {
+      showPrev();
+    }
+  });
+}
+
+// Initialize all dynamic content for index page
+function initIndex() {
+  generateFeatureGrid();
+  generateClientGrid();
+  setupReadMore();
+}
+
+// Run initialization when DOM is fully loaded
+document.addEventListener("DOMContentLoaded", initIndex);

@@ -35,21 +35,22 @@ const faqData = [
   },
 ];
 
-const faqList = document.querySelector(".faq-list");
+document.addEventListener("DOMContentLoaded", function () {
+  const faqList = document.querySelector(".faq-list");
+  faqData.forEach((item, index) => {
+    const listItem = document.createElement("li");
+    listItem.innerHTML = `
+    <h3 class="faq-question">${item.question}</h3>
+    <p class="faq-answer">${item.answer}</p>
+   `;
+    faqList.appendChild(listItem);
+  });
 
-faqData.forEach((item, index) => {
-  const listItem = document.createElement("li");
-  listItem.innerHTML = `
-  <h3 class="faq-question">${item.question}</h3>
-  <p class="faq-answer">${item.answer}</p>
- `;
-  faqList.appendChild(listItem);
+  function setupFormSubmission() {
+    document
+      .getElementById("contactForm")
+      .addEventListener("submit", function (e) {
+        // Your form submission code here
+      });
+  }
 });
-
-function setupFormSubmission() {
-  document
-    .getElementById("contactForm")
-    .addEventListener("submit", function (e) {
-      // Your form submission code here
-    });
-}
