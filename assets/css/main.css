@@ -3242,7 +3242,7 @@ body.scrolled #nav {
 
 #banner {
     position: relative;
-    padding: 8em 0 10em 0;
+    padding: 8em 0;
     background-image: url("../../images/banner.jpg");
     background-size: cover;
     background-position: center;
@@ -3306,12 +3306,6 @@ body.scrolled #nav {
     }
 }
 
-@media screen and (max-width: 1280px) {
-    #banner {
-        padding: 10em 2em 8em 2em;
-    }
-}
-
 @media screen and (max-width: 980px) {
     #banner {
         background-attachment: scroll;
@@ -3329,6 +3323,11 @@ body.scrolled #nav {
 
     #banner p {
         font-size: 0.9em;
+    }
+}
+@media screen and (min-width: 481px) {
+    #banner {
+        padding: 8em 0;
     }
 }
 
