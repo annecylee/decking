@@ -24,7 +24,6 @@ function setupCarousel() {
   const imagesContainer = carousel.querySelector(".carousel-images");
   const dotsContainer = carousel.querySelector(".carousel-dots");
   let images = Array.from(imagesContainer.querySelectorAll("img"));
-  console.log(images.length);
   let currentIndex = 0;
   let intervalId;
 
@@ -121,13 +120,6 @@ function setupCarousel() {
       showPrev();
     }
   });
-}
-
-// Initialize all dynamic content for index page
-function initIndex() {
-  generateFeatureGrid();
-  generateClientGrid();
-  setupReadMore();
 }
 
 // Run initialization when DOM is fully loaded
