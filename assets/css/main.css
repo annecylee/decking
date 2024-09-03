@@ -3465,7 +3465,7 @@ body.scrolled #nav {
 
 #scroll-to-top {
     position: fixed;
-    bottom: 50px;
+    bottom: 100px;
     right: 20px;
     background-color: #61d2b4;
     color: white;
